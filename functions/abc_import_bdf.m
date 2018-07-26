@@ -1,14 +1,26 @@
-function [resampTrack] = abc_import_bdf(newSrate, bdfFiles, bdfPath, setPath, bdfDirDonner)
-% READBDFRESAMPLE reads bdf files (pop_biosig), change the sample rate,
-% export .set file.
-% INPUT (* = required)
-%       *newSrate: a number indicating the new sampling rate. If the number
-%                  is bigger than the current sampling rate a warning will
-%                  appear.
-%       bdfFiles: a cell with bdf file names. If empty it will look for all
-%                 bdf files within bdfFiles
-%       *bdfPath: path to folder containing bdf files
-%       *setPath: path to folder where set files will be write
+function [importTrack] = abc_import_bdf(bdfPath, setPath, newSrate, bdfFiles, bdfDoneDir)
+% ABC_IMPORT_BDF import data using pop_biosig() (BIOSIG toolbox) and,
+% optionally, change the sampling rate of the imported data. Parallel
+% processing available if possible.
+% 
+% Usage: abc_import_bdf(64, bdfFiles, bdfPath, setPath, bdfDoneDir)
+% 
+% Inputs:
+%   'bdfPath'   - [string] a path to the folder with .bdf files to import.
+%   'setPath'   - [string] a path to the folder where .set files are to be
+%                 imported.
+% 
+% Optional inputs:
+%   'newSrate'  - [integer] number indicating new sampling rate. Must be
+%                 lower than current sampling rate.
+%   'bdfFiles'  - [cell array] list of .bdf files to import (files have to 
+%                 be within bdfPath folder).
+%   'bdfDoneDir'- [string] a path to the folder where imported .bdf files
+%                 are to be moved.
+% Outputs:
+%   importTrack - table with information about imported .bdf files.
+% 
+% Note: EEGlab and BIOSIG toolbox must be installed.
 
 % If no bdfFiles arg passed, get bdf files from bdfPath
 if isempty(bdfFiles)
