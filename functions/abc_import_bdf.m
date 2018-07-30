@@ -100,9 +100,10 @@ elseif size(bdfFiles, 2) > 0
             [~, ~, ~] = mkdir(setPath);
             pop_saveset( tmpEEG, 'filename', bdfFileTmp,'filepath',setPath);
             
-            % Move bdf file to done folder
-            comandMove = ['mv ' fullfile(bdfPath, bdfFileTmp) ' ' bdfDirDonner];
-            system(comandMove);            
+            % If folder to move imported .bdf files is not empty, move file.
+            if ~isempty(bdfDoneDir)
+                movefile(fullfile(bdfPath, bdfFileTmp), bdfDoneDir)                
+            end           
             
         end
     end
