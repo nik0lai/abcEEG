@@ -22,13 +22,20 @@ function [importTrack] = abc_import_bdf(bdfPath, setPath, newSrate, bdfFiles, bd
 % 
 % Note: EEGlab and BIOSIG toolbox must be installed.
 
-% If no bdfFiles arg passed, get bdf files from bdfPath
-if isempty(bdfFiles)
+%% Files to import:
+
+% If list with files is not empty, check if it's a cell
+if ~isempty(bdfFiles)
+    if ~iscell(bdfFiles)
+        error(['List with .bdf files names must be a cell.' newline ...
+            'You feed the function with a ' class(bdfFiles)])
+    end
+    % If empty, get everything within the bdf folder.
+elseif isempty(bdfFiles)
     bdfFiles = dir(fullfile(bdfPath, '/*.bdf'));
     bdfFiles = {bdfFiles.name};
 end
 
-% Check if there is any file within folder
 if ~size(bdfFiles, 2) > 0
     error(['Are you messing with me? No bdf files within ' bdfPath])
     
