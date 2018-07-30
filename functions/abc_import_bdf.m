@@ -97,8 +97,10 @@ elseif size(bdfFiles, 2) > 0
             disp('**********************************')
             
             %% save dataset
-            [~, ~, ~] = mkdir(setPath);
-            pop_saveset( tmpEEG, 'filename', bdfFileTmp,'filepath',setPath);
+            
+            mkdir(setPath); % create dir, if already exists gives a warning
+            
+            pop_saveset(tmpEEG, 'filename', bdfFileTmp,'filepath',setPath); % save dataset
             
             % If folder to move imported .bdf files is not empty, move file.
             if ~isempty(bdfDoneDir)
