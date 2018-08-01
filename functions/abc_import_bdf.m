@@ -66,9 +66,10 @@ elseif numel(bdfFiles) > 0
     date    = cell(size(bdfFiles, 2), 1);  % Date
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
+    parfor i = 1:numel(bdfFiles)
+        % Current file
+        bdfFileTmp = bdfFiles{i};
         
-    parfor i = 1:size(bdfFiles, 2)
-        bdfFileTmp = char(bdfFiles(i));
         % Read dataset, change name
         tmpEEG = pop_biosig(fullfile(bdfPath, bdfFileTmp));
         tmpEEG = pop_editset(tmpEEG, 'setname', strtok(bdfFileTmp, '.')); % asign dataset name using bdf file name
@@ -132,14 +133,14 @@ elseif numel(bdfFiles) > 0
             
             mkdir(setPath); % create dir, if already exists gives a warning
             
-            pop_saveset(tmpEEG, 'filename', bdfFileTmp,'filepath',setPath); % save dataset
+            pop_saveset(tmpEEG, 'filename', bdfFileTmp,'filepath', setPath); % save dataset
             
             % If folder to move imported .bdf files is not empty, move file.
             if ~isempty(bdfDoneDir)
                 movefile(fullfile(bdfPath, bdfFileTmp), bdfDoneDir)
             end
-        end
     end
+end
 
 % Build resamplingtracking table
 importTrack = [cell2table(bdfFiles', 'VariableNames', {'files'}) ... % file names
