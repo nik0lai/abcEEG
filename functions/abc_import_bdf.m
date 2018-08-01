@@ -38,54 +38,41 @@ end
 
 if ~size(bdfFiles, 2) > 0
     error(['Are you messing with me? No bdf files within ' bdfPath])
-    
+
 % Iterate through bdf files
 elseif size(bdfFiles, 2) > 0
+
     
-    % Track pre-processing info.
-    % % Old rate
-    % % New rate
-    % % Number of channels
-    % % EEG duration
     
-    %     srateCols   = array2table(zeros(size(bdfFiles, 2), 4),'VariableNames', {'oldRate', 'newRate', 'channNum', 'eegDur'});
-    %     resampTrack = [table(bdfFiles', 'VariableNames', {'name'}) srateCols];
-    %     resampTrack = zeros(size(bdfFiles, 2), 4);    
+    % importTrack info. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    oldRate = zeros(size(bdfFiles, 2), 1); % Original sampling rate
+    newRate = zeros(size(bdfFiles, 2), 1); % New sampling rate
+    chanNum = zeros(size(bdfFiles, 2), 1); % Number of channels of imported EEG
+    eegDur  = zeros(size(bdfFiles, 2), 1); % EEG duration (seconds)
+    date    = cell(size(bdfFiles, 2), 1);  % Date
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    oldRate = zeros(size(bdfFiles, 2), 1);
-    newRate = zeros(size(bdfFiles, 2), 1);
-    chanNum = zeros(size(bdfFiles, 2), 1);
-    eegDur  = zeros(size(bdfFiles, 2), 1);
         
-    % date only
-    date = cell(size(bdfFiles, 2), 1);
-    
     parfor i = 1:size(bdfFiles, 2)
         bdfFileTmp = char(bdfFiles(i));
         
         % read dataset, change name
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         tmpEEG = pop_biosig(fullfile(bdfPath, bdfFileTmp));
         tmpEEG = pop_editset(tmpEEG, 'setname', bdfFileTmp(:,1:length(bdfFileTmp)-4)); % asign dataset name using bdf file name
         
-        
-        if tmpEEG.srate < newSrate
+            
+            if tmpEEG.srate < newSrate
             warning(['On ' bdfFileTmp ' subject. New sampling rate is bigger than actual sampling rate'])
-        elseif tmpEEG.srate == newSrate
+            elseif tmpEEG.srate == newSrate
             warning(['On ' bdfFileTmp ' subject. New sampling rate is equal to actual sampling rate'])
-        elseif tmpEEG.srate > newSrate            
-            
-            oldRate(i) = tmpEEG.srate; % track info: original sample rate
-%             resampTrack(i, 1) = tmpEEG.srate; % track info: original sample rate
-            
+            elseif tmpEEG.srate > newSrate
+                
+                % Tracking info
+                oldRate(i) = tmpEEG.srate; % track info: original sample rate
+                
             tmpEEG = pop_resample(tmpEEG, newSrate); % re-sample eeg.
-            
-            newRate(i) = tmpEEG.srate;       % track info: new sample rate
-            chanNum(i) = tmpEEG.nbchan;      % track info: number of channels
-            eegDur(i)  = round(tmpEEG.xmax); % track info: eeg duration
-%             resampTrack(i, 2) = tmpEEG.srate;       % track info: new sample rate
-%             resampTrack(i, 3) = tmpEEG.nbchan;      % track info: number of channels
-%             resampTrack(i, 4) = round(tmpEEG.xmax); % track info: eeg duration
-            date(i, 1)        = {char(datetime)};     % date
+                
             
             %% Messages
             disp('**********************************')
@@ -111,9 +98,9 @@ elseif size(bdfFiles, 2) > 0
     end
 end
 
-% Build resamplingtracking table    
-    resampTrack = [cell2table(bdfFiles', 'VariableNames', {'files'}) cell2table(num2cell([oldRate newRate chanNum eegDur]), 'VariableNames', {'oldRate', 'newRate', 'chanNum', 'eegDuration'}) table(date)];  
-    
-% resampTrack = [resampTrack table(date)];
+% Build resamplingtracking table
+importTrack = [cell2table(bdfFiles', 'VariableNames', {'files'}) ... % file names
+    cell2table(num2cell([oldRate newRate chanNum eegDur]), 'VariableNames', {'oldRate', 'newRate', 'chanNum', 'eegDuration'}) ... % tracking info
+    table(date)]; % date
 
 end
