@@ -73,7 +73,7 @@ elseif numel(bdfFiles) > 0
         % read dataset, change name
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         tmpEEG = pop_biosig(fullfile(bdfPath, bdfFileTmp));
-        tmpEEG = pop_editset(tmpEEG, 'setname', bdfFileTmp(:,1:length(bdfFileTmp)-4)); % asign dataset name using bdf file name
+        tmpEEG = pop_editset(tmpEEG, 'setname', strtok(bdfFileTmp, '.')); % asign dataset name using bdf file name
         % Tracking info
         oldRate(i) = tmpEEG.srate;        % original sample-rate
         chanNum(i) = tmpEEG.nbchan;       % number of channels
