@@ -69,11 +69,10 @@ elseif numel(bdfFiles) > 0
         
     parfor i = 1:size(bdfFiles, 2)
         bdfFileTmp = char(bdfFiles(i));
-        
-        % read dataset, change name
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Read dataset, change name
         tmpEEG = pop_biosig(fullfile(bdfPath, bdfFileTmp));
         tmpEEG = pop_editset(tmpEEG, 'setname', strtok(bdfFileTmp, '.')); % asign dataset name using bdf file name
+        
         % Tracking info
         oldRate(i) = tmpEEG.srate;        % original sample-rate
         chanNum(i) = tmpEEG.nbchan;       % number of channels
@@ -92,10 +91,9 @@ elseif numel(bdfFiles) > 0
             % Lower than current sampling rate
             elseif tmpEEG.srate > newSrate
                 
-                % Tracking info
-                oldRate(i) = tmpEEG.srate; % track info: original sample rate
+                % Change sampling rate
+                tmpEEG = pop_resample(tmpEEG, newSrate);
                 
-            tmpEEG = pop_resample(tmpEEG, newSrate); % re-sample eeg.
                 % Tracking info - New sampling rate
                 newRate(i) = tmpEEG.srate;
                 
@@ -129,6 +127,7 @@ elseif numel(bdfFiles) > 0
                 % disp([num2str(i) '/' num2str(size(bdfFiles, 2))])
                 % size(EEG.times,2)/EEG.srate
             
+        end 
             %% save dataset
             
             mkdir(setPath); % create dir, if already exists gives a warning
@@ -137,12 +136,10 @@ elseif numel(bdfFiles) > 0
             
             % If folder to move imported .bdf files is not empty, move file.
             if ~isempty(bdfDoneDir)
-                movefile(fullfile(bdfPath, bdfFileTmp), bdfDoneDir)                
-            end           
-            
+                movefile(fullfile(bdfPath, bdfFileTmp), bdfDoneDir)
+            end
         end
     end
-end
 
 % Build resamplingtracking table
 importTrack = [cell2table(bdfFiles', 'VariableNames', {'files'}) ... % file names
