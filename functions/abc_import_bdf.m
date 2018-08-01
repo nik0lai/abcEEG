@@ -74,6 +74,11 @@ elseif numel(bdfFiles) > 0
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         tmpEEG = pop_biosig(fullfile(bdfPath, bdfFileTmp));
         tmpEEG = pop_editset(tmpEEG, 'setname', bdfFileTmp(:,1:length(bdfFileTmp)-4)); % asign dataset name using bdf file name
+        % Tracking info
+        oldRate(i) = tmpEEG.srate;        % original sample-rate
+        chanNum(i) = tmpEEG.nbchan;       % number of channels
+        eegDur(i)  = fix(tmpEEG.xmax);         % EEG duration (seconds)
+        date(i)    = {datetime('now')};   % date
         
             
             if tmpEEG.srate < newSrate
@@ -86,16 +91,31 @@ elseif numel(bdfFiles) > 0
                 oldRate(i) = tmpEEG.srate; % track info: original sample rate
                 
             tmpEEG = pop_resample(tmpEEG, newSrate); % re-sample eeg.
+                % Tracking info - New sampling rate
+                newRate(i) = tmpEEG.srate;
                 
-            
-            %% Messages
-            disp('**********************************')
-            disp(['On ' bdfFileTmp ' the sample rate is: ' num2str(tmpEEG.srate) ' Hz'])
-            disp(['number of channels: ' num2str(tmpEEG.nbchan)])
-            disp(['eeg duration: ' num2str(fix(tmpEEG.xmax)) ' seconds'])
-            disp([num2str(i) '/' num2str(size(bdfFiles, 2))])
-            % size(EEG.times,2)/EEG.srate
-            disp('**********************************')
+                %% Messages if sample-rate changed
+                disp(['**********************************' newline ...
+                    'On ' bdfFileTmp ':' newline ...
+                    'Old sample rate is: ' num2str(oldRate(i)) ' Hz' newline ...
+                    'New sample rate is: ' num2str(newRate(i)) ' Hz' newline ...
+                    'Number of channels: ' num2str(chanNum(i)) newline ...
+                    'EEG duration: ' num2str(eegDur(i)) ' seconds' newline ...
+                    '**********************************'])
+                % disp([num2str(i) '/' num2str(size(bdfFiles, 2))])
+                % size(EEG.times,2)/EEG.srate
+                                
+            end
+            %% Messages if sample-rate (didn't) changed
+            disp(['**********************************' newline ...
+                    'On ' bdfFileTmp ':' newline ...
+                    'Old sample rate is: ' num2str(oldRate(i)) ' Hz' newline ...
+                    'New sample rate is: ' num2str(newRate(i)) ' Hz' newline ...
+                    'Number of channels: ' num2str(chanNum(i)) newline ...
+                    'EEG duration: ' num2str(eegDur(i)) ' seconds' newline ...
+                    '**********************************'])
+                % disp([num2str(i) '/' num2str(size(bdfFiles, 2))])
+                % size(EEG.times,2)/EEG.srate
             
             %% save dataset
             
