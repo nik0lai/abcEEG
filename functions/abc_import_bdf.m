@@ -106,6 +106,9 @@ elseif numel(bdfFiles) > 0
                 % size(EEG.times,2)/EEG.srate
                                 
             end
+            % Tracking info - New sampling rate (no resampled, should be
+            % equal to original sampling rate
+            newRate(i) = tmpEEG.srate;
             %% Messages if sample-rate (didn't) changed
             disp(['**********************************' newline ...
                     'On ' bdfFileTmp ':' newline ...
