@@ -22,6 +22,18 @@ function [importTrack] = abc_import_bdf(bdfPath, setPath, newSrate, bdfFiles, bd
 %
 % Note: EEGlab and BIOSIG toolbox must be installed.
 
+%% Check min arguments
+% .bdf files
+if isempty(bdfPath)
+    error(['A path to the folder with .bdf files has to be set.' newline ...
+        'Your parth is: ' bdfPath])
+end
+
+% .set files
+if isempty(setPath)
+    error(['A path to the folder were .set files are to be saved.' newline ...
+        'Your parth is: ' setPath])
+end
 %% Files to import:
 
 % If list with files is not empty, check if it's a cell
