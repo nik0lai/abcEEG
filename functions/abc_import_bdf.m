@@ -36,13 +36,15 @@ elseif isempty(bdfFiles)
     bdfFiles = {bdfFiles.name};
 end
 
-if ~size(bdfFiles, 2) > 0
-    error(['Are you messing with me? No bdf files within ' bdfPath])
 
-% Iterate through bdf files
-elseif size(bdfFiles, 2) > 0
+%% Begin import:
 
+% No files within the folder?
+if ~numel(bdfFiles) > 0
+    error(['There are no .bdf files within: ' newline bdfPath])
     
+    % Iterate through .bdf files
+elseif numel(bdfFiles) > 0
     
     % importTrack info. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     oldRate = zeros(size(bdfFiles, 2), 1); % Original sampling rate
