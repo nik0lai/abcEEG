@@ -80,11 +80,16 @@ elseif numel(bdfFiles) > 0
         eegDur(i)  = fix(tmpEEG.xmax);         % EEG duration (seconds)
         date(i)    = {datetime('now')};   % date
         
+        % Change sample rate?
+        if ~isempty(newSrate) % If new sampling rate is not empty, do the following:
             
+            % Check if new sampling rate if lower than current sampling rate
             if tmpEEG.srate < newSrate
-            warning(['On ' bdfFileTmp ' subject. New sampling rate is bigger than actual sampling rate'])
+                warning(['On file ' bdfFileTmp ', new sampling rate is higher than actual sampling rate'])
             elseif tmpEEG.srate == newSrate
-            warning(['On ' bdfFileTmp ' subject. New sampling rate is equal to actual sampling rate'])
+                warning(['On file ' bdfFileTmp ', new sampling rate is equal to actual sampling rate'])
+                
+            % Lower than current sampling rate
             elseif tmpEEG.srate > newSrate
                 
                 % Tracking info
@@ -106,9 +111,13 @@ elseif numel(bdfFiles) > 0
                 % size(EEG.times,2)/EEG.srate
                                 
             end
+            
+        elseif isempty(newSrate)
+            
             % Tracking info - New sampling rate (no resampled, should be
             % equal to original sampling rate
             newRate(i) = tmpEEG.srate;
+            
             %% Messages if sample-rate (didn't) changed
             disp(['**********************************' newline ...
                     'On ' bdfFileTmp ':' newline ...
