@@ -24,9 +24,6 @@ if isempty(setPath)
         'Your parth is: ' setPath])
 end
 
-if isempty(setFiles)
-    setFile = dir([setPath '/*.set']);
-    setFile = {setFile.name};
 % Path to channels location files (check if empty, if number)
 if isempty(highPassFilter) && isempty(lowPassFilter)
     error('At least one filter has to be set.')
@@ -46,6 +43,8 @@ end
 
 parfor i = 1:size(setFile, 2)
     currSet = setFile(i);
+%% Files to filter
+setFiles = abc_check_files(setFiles, setPath, 'set');
     
     tempEEG = pop_loadset('filename',char(currSet), 'filepath', char(setPath));
     
