@@ -1,15 +1,15 @@
 function [] = abc_chann_loc(setFiles, setPath, channLocPath)
 % ABC_CHANN_LOC add channel locations using pop_editset() (EEGLAB).
-% 
-% Usage: abc_chann_loc(setFiles, setPath, channsPath)
-% 
+%
+% Usage: abc_chann_loc(setFiles, setPath, channLocPath)
+%
 % Inputs:
 %   'setPath'       - [string] a path to the folder where .set files are to be
 %                     imported.
 %   'channLocPath'  - [string] a path to a channel locations file.
 %
 % Optional inputs:
-%   'setFiles'  - [cell array] list of .set files (files have to be within 
+%   'setFiles'  - [cell array] list of .set files (files have to be within
 %                 setPath folder).
 %
 % Note: EEGLAB toolbox must be installed.
