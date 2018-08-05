@@ -35,8 +35,6 @@ setFiles = abc_check_files(setFiles, setPath, 'set');
 
     %     Save dataset
     pop_saveset(tempEEG  , 'filename', char(currSet),'filepath', char(setPath));
-    %     Progress indicator
-    disp([num2str(i) '/' num2str(size(setFile, 2))])    
 %% Add channels
 for i = 1:numel(setFiles)
     currSet = setFiles{i};
@@ -60,6 +58,25 @@ for i = 1:numel(setFiles)
         newChannLoc = tmpEEG.chanlocs;
     end
     
+    % Compare old and new channel locations
+    if strcmp(oldChannLoc, 'noChannLoc') && ~strcmp(newChannLoc, 'noChannLoc')
+        statusMSG = 'Channel locations imported.';
+    elseif strcmp(oldChannLoc, 'noChannLoc') && strcmp(newChannLoc, 'noChannLoc')
+        statusMSG = ['Channel locations not imported.' newline ... 
+            'Check if number of channels is different in dataset and channel file.'];
+    elseif ~strcmp(oldChannLoc, 'noChannLoc') && ~strcmp(newChannLoc, 'noChannLoc')
+        if isequal(oldChannLoc, newChannLoc)
+            statusMSG = ['Channel locations did not change.'];
+        end        
+    end
+    
+    %% Progress indicator
+    disp(['**************************' newline ...
+        'File ' num2str(i) ' out of ' num2str(numel(setFiles)) '.' newline ...
+        currSet newline ...
+        statusMSG newline ...
+        '**************************'])
+        
 end
 
 end
