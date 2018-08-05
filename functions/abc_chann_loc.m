@@ -1,12 +1,12 @@
 function [] = abc_chann_loc(setFiles, setPath, channLocPath)
-% ABC_CHANN_LOC add channels location using pop_editset() (EEGLAB).
+% ABC_CHANN_LOC add channel locations using pop_editset() (EEGLAB).
 % 
 % Usage: abc_chann_loc(setFiles, setPath, channsPath)
 % 
 % Inputs:
 %   'setPath'       - [string] a path to the folder where .set files are to be
 %                     imported.
-%   'channLocPath'  - [string] a path to the channels location file.
+%   'channLocPath'  - [string] a path to a channel locations file.
 %
 % Optional inputs:
 %   'setFiles'  - [cell array] list of .set files (files have to be within 
@@ -23,9 +23,9 @@ end
 
 % Path to channels location files (check if empty, if number)
 if isempty(channLocPath)
-    error(['Path to channels location file is empty.'])
+    error('Path to channel locations is empty.')
 elseif ~isempty(channLocPath) && ~(exist(channLocPath, 'file') == 2)
-    error(['Channels location files does not exist.' newline ...
+    error(['Channel locations does not exist.' newline ...
         'You feed the function with the following path: ' newline ...
         channLocPath])
 end
