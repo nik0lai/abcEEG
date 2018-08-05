@@ -43,6 +43,12 @@ for i = 1:size(setFile, 2)
     pop_saveset(tempEEG  , 'filename', char(currSet),'filepath', char(setPath));
     %     Progress indicator
     disp([num2str(i) '/' num2str(size(setFile, 2))])    
+    % Check if dataset have channel locations
+    if isempty(tmpEEG.chanlocs)
+        oldChannLoc = 'noChannLoc';
+    elseif ~isempty(tmpEEG.chanlocs)
+        oldChannLoc = tmpEEG.chanlocs;
+    end
     
 end
 
