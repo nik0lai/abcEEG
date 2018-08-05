@@ -17,13 +17,31 @@ function [] = abc_filtering(setFiles, setPath, highPassFilter, lowPassFilter)
 %
 % Note: EEGLAB toolbox must be installed.
 
-if isempty(saveOrNotToSave)
-    saveOrNotToSave = 1;
+%% Check min arguments
+% .set files
+if isempty(setPath)
+    error(['A path to the folder with .set files has to be set.' newline ...
+        'Your parth is: ' setPath])
 end
 
 if isempty(setFiles)
     setFile = dir([setPath '/*.set']);
     setFile = {setFile.name};
+% Path to channels location files (check if empty, if number)
+if isempty(highPassFilter) && isempty(lowPassFilter)
+    error('At least one filter has to be set.')
+elseif ~isempty(highPassFilter) || ~isempty(lowPassFilter)
+    
+    % Check if highPassFilter is a number
+    if ~isempty(highPassFilter) && ~isnumeric(highPassFilter)
+        error(['highPassFilter is not a number.' newline ...
+            'Is a ' class(highPassFilter)])
+    end
+    % Check if lowPassFilter is a number
+    if ~isempty(lowPassFilter) && ~isnumeric(lowPassFilter)
+        error(['lowPassFilter is not a number.' newline ...
+            'Is a ' class(lowPassFilter)])
+    end
 end
 
 parfor i = 1:size(setFile, 2)
