@@ -1,19 +1,21 @@
-function [filteredEEG] = abc_filtering(setFiles, setPath, lowPassEnd, highPassEnd, saveOrNotToSave)
-% twoFiltersOneCall applies two filters separately in one call (but who you
-% gonna call?).
-% INPUT (* = required)
-%       setFiles: a cell containing .set files names. If not supplied it
-%       will looked for them within setpath.
-%       *setPath: path to folder containing set files.
-%       *lowPassEnd: number, lower end of filter.
-%       *highPassEnd: number, higher end of filter.
-%       *saveOrNotToSave: 0 to output filter eeg and 1 to save dataset.
-%                         Default is to save. To output the EEG struct it
-%                         is necessary to call the function with one EEG
-%                         at the time (not within a for loop).
+function [] = abc_filtering(setFiles, setPath, highPassFilter, lowPassFilter)
+% ABC_FILERING apply fitlers using pop_eegfiltnew() (EEGLAB Toolbox). A low
+% and/or high pass filter can be applied in different calls
+% (non-simultaneously).
 %
-%       e.g.
-%       twoFiltersOneCall(setFiles, setPath, lowPassEnd, highPassEnd, saveOrNotToSave)
+% Usage: abc_filtering(setFiles, setPath, highPassFilter, lowPassFilter)
+%
+% Inputs:
+%   'setPath'       - [string] a path to the folder where .set files are to be
+%                     imported.
+%   'highPassFilter'- [integer] number indicating lower edge of filter.
+%   'lowPassFilter' - [integer] number indicating higher edge of filter.
+%
+% Optional inputs:
+%   'setFiles'  - [cell array] list of .set files (files have to be within
+%                 setPath folder).
+%
+% Note: EEGLAB toolbox must be installed.
 
 if isempty(saveOrNotToSave)
     saveOrNotToSave = 1;
