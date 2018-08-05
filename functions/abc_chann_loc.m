@@ -30,15 +30,8 @@ elseif ~isempty(channLocPath) && ~(exist(channLocPath, 'file') == 2)
         channLocPath])
 end
 
-
-
-
-
-% if setFiles are not feeded, look for them
-if isempty(setFiles)
-    setFile = dir([setPath '/*.set']);
-    setFile = {setFile.name};
-end
+%% Files to add channel locations
+setFiles = abc_check_files(setFiles, setPath, 'set');
 
 for i = 1:size(setFile, 2)
     currSet = setFile(i);
