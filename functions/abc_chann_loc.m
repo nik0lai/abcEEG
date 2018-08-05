@@ -33,16 +33,18 @@ end
 %% Files to add channel locations
 setFiles = abc_check_files(setFiles, setPath, 'set');
 
-for i = 1:size(setFile, 2)
-    currSet = setFile(i);
-    %     Read dataset
-    tempEEG = pop_loadset('filename',char(currSet), 'filepath', char(setPath));
     %     Add channel location
     tempEEG = pop_editset(tempEEG, 'chanlocs', channLocPath);
     %     Save dataset
     pop_saveset(tempEEG  , 'filename', char(currSet),'filepath', char(setPath));
     %     Progress indicator
     disp([num2str(i) '/' num2str(size(setFile, 2))])    
+%% Add channels
+for i = 1:numel(setFiles)
+    currSet = setFiles{i};
+    % Read dataset
+    tmpEEG = pop_loadset('filename', currSet, 'filepath', setPath);
+   
     % Check if dataset have channel locations
     if isempty(tmpEEG.chanlocs)
         oldChannLoc = 'noChannLoc';
