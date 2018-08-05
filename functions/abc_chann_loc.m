@@ -33,8 +33,6 @@ end
 %% Files to add channel locations
 setFiles = abc_check_files(setFiles, setPath, 'set');
 
-    %     Save dataset
-    pop_saveset(tempEEG  , 'filename', char(currSet),'filepath', char(setPath));
 %% Add channels
 for i = 1:numel(setFiles)
     currSet = setFiles{i};
@@ -69,6 +67,9 @@ for i = 1:numel(setFiles)
             statusMSG = ['Channel locations did not change.'];
         end        
     end
+    
+    %% Save dataset
+    pop_saveset(tmpEEG, 'filename', currSet,'filepath', setPath);
     
     %% Progress indicator
     disp(['**************************' newline ...
