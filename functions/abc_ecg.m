@@ -1,9 +1,9 @@
 function [] = abc_ecg(setFile, setPath, chann1, chann2)
-% ABC_ECG create a new ECG channel (using pop_eegchanoperator() (ERPLAB 
-% Toolbox) by substracting chann2 to chann1. 
+% ABC_ECG create a new ECG channel (using pop_eegchanoperator() (ERPLAB
+% Toolbox) by substracting chann2 to chann1.
 %
 % Usage: abc_ecg(setFile, setPath, chann1, chann2)
-% 
+%
 % Inputs:
 %   'setPath'       - [string] a path to the folder where .set files are to be
 %                     imported.
@@ -29,7 +29,7 @@ if isempty(chann1) || isempty(chann2)
 elseif ~isnumeric(chann1) && ~isnumeric(chann2)
     error(['Both channel numbers (chann1 and chann2) must be numbers' newline ...
         'You feed the function with ' class(chann1) ' and ' class(chann2)])
-end    
+end
 
 %% Files to filter
 setFile = abc_check_files(setFile, setPath, 'set');
@@ -39,34 +39,37 @@ for i = 1:numel(setFile)
     currSet = setFile{i};
     
     % Load dataset
-    tempEEG = pop_loadset('filename', currSet, 'filepath', setPath);
+    tmpEEG = pop_loadset('filename', currSet, 'filepath', setPath);
     
-    % Check if EKG already exists (FIX THIS)
-    channNames = {tempEEG.chanlocs.labels};
+    % channel labels
+    channNames = {tmpEEG.chanlocs.labels};
     
-    if sum(strcmp(channNames, 'EKG')) > 1
-        disp('************************************************')
-        disp([tempEEG.setname ' has more than one EKG channel.'])
-        disp([num2str(i) '/' num2str(size(setFile, 2))])
-        disp('************************************************')
-    elseif sum(strcmp(channNames, 'EKG')) == 1
-        disp('************************************************')
-        disp([tempEEG.setname ' already has an EKG channel.'])
-        disp([num2str(i) '/' num2str(size(setFile, 2))])
-        disp('************************************************')
-    elseif sum(strcmp(channNames, 'EKG')) == 0
-        disp('************************************************')
-        disp(['Creating EKG channel on channel ' num2str(tempEEG.nbchan+1)])
-        disp([num2str(i) '/' num2str(size(setFile, 2))])
-        disp('************************************************')
+    % Check if ECG channel already exists
+    if ~isempty(find(strcmp(channNames, 'EKG'), 1)) || ...
+            ~isempty(find(strcmp(channNames, 'ECG'), 1)) || ...
+            ~isempty(find(strcmp(channNames, 'ekg'), 1)) || ...
+            ~isempty(find(strcmp(channNames, 'ecg'), 1))
         
-        % Create EKG chann
-        tempEEG = pop_eegchanoperator(tempEEG, {[['ch' int2str(tempEEG .nbchan + 1)] ' = ch' num2str(chann1) ' - ch' num2str(chann2) ' label EKG']} , 'ErrorMsg', 'popup', 'Warning', 'on');
+        % Progress message
+        disp(['************************************************' newline ...
+            tmpEEG.setname newline ...
+            'ECG channel already exists.' newline ...
+            num2str(i) '/' num2str(size(setFile, 2)) newline ...
+            '************************************************'])
+    else
+        % Progress message
+        disp(['************************************************' newline ...
+            tmpEEG.setname newline ...
+            'Creating ECG channel on index ' num2str(tmpEEG.nbchan+1) newline ...
+            num2str(i) '/' num2str(size(setFile, 2)) newline ...
+            '************************************************'])
+        
+        % Create ECG chann
+        tmpEEG = pop_eegchanoperator(tmpEEG, {[['ch' int2str(tmpEEG .nbchan + 1)] ' = ch' num2str(chann1) ' - ch' num2str(chann2) ' label EKG']} , 'ErrorMsg', 'popup', 'Warning', 'on');
+        
         % Save dataset
-        pop_saveset(tempEEG  , 'filename', char(currSet),'filepath', char(setPath));
+        pop_saveset(tmpEEG  , 'filename', currSet,'filepath', setPath);
         
-    end 
-    
-    
+    end
 end
 end
