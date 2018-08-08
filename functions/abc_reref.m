@@ -39,6 +39,9 @@ if isempty(excludeChann)
 elseif ~isempty(excludeChann) && ~isnumeric(excludeChann)
     error(['New reference channel(s) is not a number.'])
 end
+
+%% Files to filter
+setFiles = abc_check_files(setFiles, setPath, 'set');
     % Load dataset
     tempEEG = pop_loadset('filename',char(currSet), 'filepath', char(setPath));
     % Re-reference
