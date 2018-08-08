@@ -51,17 +51,18 @@ parfor i = 1:numel(setFiles)
     % Load dataset
     tmpEEG = pop_loadset('filename', currSet, 'filepath', setPath);
     
-    %     filtering
-    %     tempEEG = pop_eegfiltnew(tempEEG, [],lowPassEnd,846,1,[],0);
-    %     tempEEG = pop_eegfiltnew(tempEEG, [],lowPassEnd,1690,1,[],0); % 256
+    % Get highPassFilter filter order (this is usually calculated when
+    % applying a fitler through EEGLAB's GUI. The following function is an
+    % extraction of EEGLAB's GUI.
+    filtOrderHighpass = abc_filtOrderCalc(tmpEEG.srate, highPassFilter, []); % 2112
     
-    filtOrderHighpass = filtorderCalc(tempEEG.srate, lowPassEnd, []);
     tempEEG = pop_eegfiltnew(tempEEG, [],lowPassEnd, filtOrderHighpass,1,[],0); % 256
     
-    %     tempEEG = pop_eegfiltnew(tempEEG, [],highPassEnd,58,0,[],0);
-    %     tempEEG = pop_eegfiltnew(tempEEG, [],highPassEnd, 114,0,[],0); % 256
+    % Get lowPassFilter filter order (this is usually calculated when
+    % applying a fitler through EEGLAB's GUI. The following function is an
+    % extraction of EEGLAB's GUI.
+    filtOrderLowpass = abc_filtOrderCalc(tmpEEG.srate, [], lowPassFilter); % 106
     
-    filtOrderLowpass = filtorderCalc(tempEEG.srate, [], highPassEnd);
     tempEEG = pop_eegfiltnew(tempEEG, [],highPassEnd, filtOrderLowpass,0,[],0); % 256
     
     %     EDIT NAME
