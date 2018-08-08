@@ -1,8 +1,8 @@
-function [] = abc_ecg(setFile, setPath, chann1, chann2)
+function [] = abc_ecg(setFiles, setPath, chann1, chann2)
 % ABC_ECG create a new ECG channel (using pop_eegchanoperator() (ERPLAB
 % Toolbox) by substracting chann2 to chann1.
 %
-% Usage: abc_ecg(setFile, setPath, chann1, chann2)
+% Usage: abc_ecg(setFiles, setPath, chann1, chann2)
 %
 % Inputs:
 %   'setPath'       - [string] a path to the folder where .set files are to be
@@ -31,12 +31,12 @@ elseif ~isnumeric(chann1) && ~isnumeric(chann2)
         'You feed the function with ' class(chann1) ' and ' class(chann2)])
 end
 
-%% Files to filter
-setFile = abc_check_files(setFile, setPath, 'set');
+%% Files to create ECG
+setFiles = abc_check_files(setFiles, setPath, 'set');
 
 %% Create ECG
-for i = 1:numel(setFile)
-    currSet = setFile{i};
+for i = 1:numel(setFiles)
+    currSet = setFiles{i};
     
     % Load dataset
     tmpEEG = pop_loadset('filename', currSet, 'filepath', setPath);
@@ -54,14 +54,14 @@ for i = 1:numel(setFile)
         disp(['************************************************' newline ...
             tmpEEG.setname newline ...
             'ECG channel already exists.' newline ...
-            num2str(i) '/' num2str(size(setFile, 2)) newline ...
+            num2str(i) '/' num2str(size(setFiles, 2)) newline ...
             '************************************************'])
     else
         % Progress message
         disp(['************************************************' newline ...
             tmpEEG.setname newline ...
             'Creating ECG channel on index ' num2str(tmpEEG.nbchan+1) newline ...
-            num2str(i) '/' num2str(size(setFile, 2)) newline ...
+            num2str(i) '/' num2str(size(setFiles, 2)) newline ...
             '************************************************'])
         
         % Create ECG chann
