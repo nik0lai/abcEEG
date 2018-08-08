@@ -41,10 +41,12 @@ elseif ~isempty(highPassFilter) || ~isempty(lowPassFilter)
     end
 end
 
-parfor i = 1:size(setFile, 2)
-    currSet = setFile(i);
 %% Files to filter
 setFiles = abc_check_files(setFiles, setPath, 'set');
+
+%% Filter
+parfor i = 1:numel(setFiles)
+    currSet = setFiles{i};
     
     tempEEG = pop_loadset('filename',char(currSet), 'filepath', char(setPath));
     
