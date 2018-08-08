@@ -67,8 +67,8 @@ parfor i = 1:numel(setFiles)
     % Apply lowPassFilter
     tmpEEG = pop_eegfiltnew(tmpEEG, [], lowPassFilter, filtOrderLowpass,0,[],0);
     
-    %     EDIT NAME
-    tempEEG = pop_editset(tempEEG, 'setname', [tempEEG.setname 'f']);
+    % Edit dataset's name. Add a '_f' at the end.
+    tmpEEG = pop_editset(tmpEEG, 'setname', [tmpEEG.setname 'f']);
     
     if (saveOrNotToSave == 0)
         filteredEEG = tempEEG;
