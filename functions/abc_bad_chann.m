@@ -33,7 +33,7 @@ elseif ~isempty(specFreqRange) && ~isnumeric(specFreqRange)
         'You feed the function with a ' class(specFreqRange)])
 end
 
-%% Files to create ECG
+%% Files to check
 setFiles = abc_check_files(setFiles, setPath, 'set');
 
 %% Plot!
