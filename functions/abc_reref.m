@@ -1,23 +1,28 @@
 function [] = abc_reref(setFiles, setPath, reRefChann, excludeChann)
-% reRef change reference channels
-% INPUT (* = required)
-%       setFiles:       a cell containing .set files names. If not supplied
-%                       it will looked for them within setpath.
-%       *setPath:       path to folder containing set files.
-%       *reRefChann:    vector of numbers. channels to rereference data.
-%                       (e.g. [129 130])
-%       *excludeChann:  vector of numbers. channels to exclude from reref
-%                       process. (e.g. [131:136])
+% ABC_REREF re-reference channels using pop_reref() (EEGLAB Toolbox)
 %
-%       e.g.
-%       reRef(setFiles, setPath, reRefChann, excludeChann)
+% Usage: abc_reref(setFile, setPath, reRefChann, excludeChann)
+% 
+% Inputs:
+%   'setPath'       - [string] a path to the folder where .set files are to 
+%                     be imported.
+%   'reRefChann'    - [integer] one or more numbers indicating new
+%                     reference channels.
+%   'excludeChann'  - [integer] one or more numbers indicating channels to
+%                     exclude.
+% 
+% Optional inputs:
+%   'setFiles'  - [cell array] list of .set files (files have to be within
+%                 setPath folder).
+%
+% Note: EEGLAB toolbox must be installed.
 
 % if setFiles are not feeded, look for them
 if isempty(setFiles)
     setFile = dir([setPath '/*.set']);
     setFile = {setFile.name};
 end
-
+   
 for i = 1:size(setFile, 2)
     currSet = setFile(i);
     %     Load dataset
