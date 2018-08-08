@@ -70,11 +70,8 @@ parfor i = 1:numel(setFiles)
     % Edit dataset's name. Add a '_f' at the end.
     tmpEEG = pop_editset(tmpEEG, 'setname', [tmpEEG.setname 'f']);
     
-    if (saveOrNotToSave == 0)
-        filteredEEG = tempEEG;
-    elseif (saveOrNotToSave == 1)
-        pop_saveset(tempEEG, 'filename', char(currSet),'filepath', char(setPath));
-    end
+    %% Save dataset
+    pop_saveset(tmpEEG, 'filename', currSet,'filepath', setPath);
     
     disp('*****************************************')
     disp(['highpass: ' num2str(filtOrderHighpass)])
