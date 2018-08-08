@@ -48,7 +48,8 @@ setFiles = abc_check_files(setFiles, setPath, 'set');
 parfor i = 1:numel(setFiles)
     currSet = setFiles{i};
     
-    tempEEG = pop_loadset('filename',char(currSet), 'filepath', char(setPath));
+    % Load dataset
+    tmpEEG = pop_loadset('filename', currSet, 'filepath', setPath);
     
     %     filtering
     %     tempEEG = pop_eegfiltnew(tempEEG, [],lowPassEnd,846,1,[],0);
