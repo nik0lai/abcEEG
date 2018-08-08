@@ -73,11 +73,13 @@ parfor i = 1:numel(setFiles)
     %% Save dataset
     pop_saveset(tmpEEG, 'filename', currSet,'filepath', setPath);
     
-    disp('*****************************************')
-    disp(['highpass: ' num2str(filtOrderHighpass)])
-    disp(['lowpass: ' num2str(filtOrderLowpass)])
-    disp([num2str(i) '/' num2str(size(setFile, 2))])
-    disp('*****************************************')
+    %% Progress message
+    
+    disp(['*****************************************' newline ...
+        'highpass: ' num2str(filtOrderHighpass) newline ...
+        'lowpass: ' num2str(filtOrderLowpass) newline ...
+        num2str(i) '/' num2str(size(setFiles, 2)) newline ...
+        '*****************************************'])
     
 end
 
