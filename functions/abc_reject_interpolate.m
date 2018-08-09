@@ -28,7 +28,7 @@ preprocTable = readtable(preprocPath);
 preprocTable = preprocTable(contains(preprocTable.toDO, 'rejectInter'), :);
 
 % Cell with file names
-files = preprocTable.file_name';
+setFiles = preprocTable.file_name';
 
 %% Get channels to interpolate and components to reject
 % Create a 1x1 cell with all channels to interpolate (paste columns 'duplicated_channs'
@@ -45,29 +45,29 @@ badComp  = cell2table(strcat(char(preprocTable{:, 'comp_eyemove'}), {','}, ...
     char(preprocTable{:, 'comp_headmove'}), {','}, ... 
     char(preprocTable{:, 'comp_blerp'})));
 
-parfor i = 1:size(files, 2)
+%% Reject/interpolate
+parfor i = 1:numel(setFiles)
+    currSet = [setFiles{i} '.set'];
     
-    % Get current bad components
+    % Load dataset
+    tmpEEG = pop_loadset('filename', currSet, 'filepath', setPath);
+    
+    %% Get current bad components
     currBadComp = char(badComp{i, :});
     % Remove extra commas
     while contains(currBadComp, ',,')
         currBadComp = strrep(currBadComp, ',,', ',');
     end
-        
-    % Current file to ICA
-    currFile = [files{i} '.set'];
     
-    % read dataset
-    tempEEG = pop_loadset('filename', currFile, 'filepath', setPath);
+    %% Reject components   
+    tmpEEG = pop_subcomp(tmpEEG, currBadComp, 0);
     
-    % Reject bad components
-    tempEEG = pop_subcomp( tempEEG, currBadComp, 0);
+    %% Interpolate channels
+    tmpEEG = pop_interp(tmpEEG, str2num(char(badChann{i,:})), 'spherical');
     
-    % Interpolate bad channels
-    tempEEG = pop_interp(tempEEG, str2num(char(badChann{i,:})), 'spherical');
-    
-    % Save dataset
-    pop_saveset(tempEEG  , 'filename', currFile,'filepath', setPath);
+    %% Save dataset
+    pop_saveset(tmpEEG  , 'filename', currSet,'filepath', setPath);
     
 end
 
+end
