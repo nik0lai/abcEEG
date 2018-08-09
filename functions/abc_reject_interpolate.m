@@ -22,10 +22,6 @@ function [] = abc_reject_interpolate(setPath, preprocPath)
 % 
 % Note: EEGLAB toolbox must be installed.
 
-% Bad channels and Bad components
-badChann = cell2table(strcat(char(preprocTable{:, 'duplicated_channs'}), {','}, char(preprocTable{:, 'bad_channs'})), 'VariableNames', {'allBad'});
-badComp  = cell2table(strcat(char(preprocTable{:, 'comp_eyemove'}), {','}, char(preprocTable{:, 'comp_muscle'}), {','}, char(preprocTable{:, 'comp_50hz'}), ...
-    {','}, char(preprocTable{:, 'comp_ecg'}), {','}, char(preprocTable{:, 'comp_headmove'}), {','}, char(preprocTable{:, 'comp_blerp'})));
 %% Read preprocessing table
 preprocTable = readtable(preprocPath);
 % Filter rows to keep files to reject/interpolate
@@ -36,6 +32,20 @@ files = preprocTable.file_name';
 
 % Path to files
 setPath = '/home/niki/Documents/eegeses/fdcyt_agustin/newset/ICA';
+%% Get channels to interpolate and components to reject
+% Create a 1x1 cell with all channels to interpolate (paste columns 'duplicated_channs'
+% and 'bad_channs'.
+badChann = cell2table(strcat(char(preprocTable{:, 'duplicated_channs'}), {','}, ... 
+    char(preprocTable{:, 'bad_channs'})), ...
+    'VariableNames', {'allBad'});
+% Create a 1x1 cell with all components to reject (paste columns 'comp_eyemove',
+% 'bad_channs', 'comp_50hz', 'comp_ecg', 'comp_headmove', 'comp_blerp'.
+badComp  = cell2table(strcat(char(preprocTable{:, 'comp_eyemove'}), {','}, ...
+    char(preprocTable{:, 'comp_muscle'}), {','}, ...
+    char(preprocTable{:, 'comp_50hz'}), {','}, ...
+    char(preprocTable{:, 'comp_ecg'}), {','}, ... 
+    char(preprocTable{:, 'comp_headmove'}), {','}, ... 
+    char(preprocTable{:, 'comp_blerp'})));
 
 parfor i = 1:size(files, 2)
     
