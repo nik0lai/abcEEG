@@ -3,14 +3,14 @@ function [] = abc_reject_interpolate(setPath, preprocPath)
 % and interpolate channels using pop_interp() (both from EEGLAB Toolbox).
 %
 % Usage: abc_reject_interpolate(setPath, preprocPath)
-
+% 
 % Inputs:
 %   'setPath'       - [string] a path to the folder where .set files are to be
 %                     imported.
 %   'preprocPath'   - [string] a path to a .csv file with the following
 %                     columns (each row is a .set file). 'file_name': .set
 %                     file names, 'toDo': files that have components to
-%                     reject and channels to inteporlate should 
+%                     reject and channels to inteporlate should
 %                     'rejectInter' on this column, 'duplicated_channels':
 %                     channels to interpolate (in this case, duplicated
 %                     channels), 'bad_channs': channels to interpolate for
@@ -19,7 +19,7 @@ function [] = abc_reject_interpolate(setPath, preprocPath)
 %                     'comp_50hz', 'comp_ecg', 'comp_headmove',
 %                     'comp_blerp'. A filled example of this .csv file can
 %                     be found on /resources/examplePreprocTable.csv.
-% 
+%
 % Note: EEGLAB toolbox must be installed.
 
 %% Read preprocessing table
@@ -33,7 +33,7 @@ setFiles = preprocTable.file_name';
 %% Get channels to interpolate and components to reject
 % Create a 1x1 cell with all channels to interpolate (paste columns 'duplicated_channs'
 % and 'bad_channs'.
-badChann = cell2table(strcat(char(preprocTable{:, 'duplicated_channs'}), {','}, ... 
+badChann = cell2table(strcat(char(preprocTable{:, 'duplicated_channs'}), {','}, ...
     char(preprocTable{:, 'bad_channs'})), ...
     'VariableNames', {'allBad'});
 % Create a 1x1 cell with all components to reject (paste columns 'comp_eyemove',
@@ -41,8 +41,8 @@ badChann = cell2table(strcat(char(preprocTable{:, 'duplicated_channs'}), {','}, 
 badComp  = cell2table(strcat(char(preprocTable{:, 'comp_eyemove'}), {','}, ...
     char(preprocTable{:, 'comp_muscle'}), {','}, ...
     char(preprocTable{:, 'comp_50hz'}), {','}, ...
-    char(preprocTable{:, 'comp_ecg'}), {','}, ... 
-    char(preprocTable{:, 'comp_headmove'}), {','}, ... 
+    char(preprocTable{:, 'comp_ecg'}), {','}, ...
+    char(preprocTable{:, 'comp_headmove'}), {','}, ...
     char(preprocTable{:, 'comp_blerp'})));
 
 %% Reject/interpolate
@@ -59,7 +59,7 @@ parfor i = 1:numel(setFiles)
         currBadComp = strrep(currBadComp, ',,', ',');
     end
     
-    %% Reject components   
+    %% Reject components
     tmpEEG = pop_subcomp(tmpEEG, currBadComp, 0);
     
     %% Interpolate channels
