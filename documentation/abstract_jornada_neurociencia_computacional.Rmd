@@ -1,0 +1,13 @@
+---
+title: 'abcEEG: A new electroencephalography automatic batch signal-cleaning toolbox
+  for MATLAB'
+author: "Nicolás Sánchez-Fuenzalida^1^"
+output: pdf_document
+---
+
+1. Centro de Neurociencia Social y Cognitiva (CSCN), Escuela de Psicología, Universidad Adolfo Ibañez.
+
+\hyphenpenalty 10000
+Electroencephalography (EEG) signal-cleaning, or data EEG preprocessing, is necessary to conduct almost every kind of research with EEG data (time domain analysis like ERPs, time-frequency analysis, etc.). The signal-cleaning process encompasses several steps where researchers decide on different parameters such as data sampling-rate, data filtering thresholds, and reference scheme, that will shape the final form of the preprocessed data. The multi-step character of the process makes it very error-prone if not approached systematically. Additionally, if signal-cleaning is done manually using a graphical user interface (like EEGLAB's GUI), there is no easy-access record of what has been done to a given dataset.  
+In order to reduce the error-probability and to make sure that every dataset in a research receives the same signal-cleaning treatment, it is recommended to use a script or pipeline that will conduct the actual preprocessing in the same way on every file. Additionally, having a code-written pipeline makes it easier for others to inspect what kind of signal-cleaning process has been conducted on any analyzed data.  
+abcEEG is a MATLAB toolbox that addresses this concerns by providing a preprocessing framework that deals automatically with batches of EEG files. The actual preprocessing is done using EEGLAB and ERPLAB toolboxes. Among its functionalities, abcEEG provides a simple and clear way to construct a preprocessing pipeline, to organize files while keeping a backup before conducting non-reversible steps, and to keep track of the information about the signal-cleaning process. Currently, the abcEEG toolbox can import bdf files, change sampling rates, add channel locations, filter data, create ECG channel, trim non-relevant recorded data, re-reference data, and run independent component analysis (ICA). It also provides interactive functions to identify bad channels, artifactual ICA components, and to put ECG-related event markers (e.g. R peaks).
