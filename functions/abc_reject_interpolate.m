@@ -30,8 +30,6 @@ preprocTable = preprocTable(contains(preprocTable.toDO, 'rejectInter'), :);
 % Cell with file names
 files = preprocTable.file_name';
 
-% Path to files
-setPath = '/home/niki/Documents/eegeses/fdcyt_agustin/newset/ICA';
 %% Get channels to interpolate and components to reject
 % Create a 1x1 cell with all channels to interpolate (paste columns 'duplicated_channs'
 % and 'bad_channs'.
