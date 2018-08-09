@@ -4,10 +4,6 @@ function [] = abc_reject_interpolate(setPath, preprocPath)
 %
 % Usage: abc_reject_interpolate(setPath, preprocPath)
 
-% Read preprocessing table
-preprocTable = readtable('/home/niki/midgard/fondecyt/agustin/docs/preprocTracking.csv');
-% Keep file to run ICA with
-preprocTable = preprocTable(contains(preprocTable.toDO, 'rejectInter'), :);
 % Inputs:
 %   'setPath'       - [string] a path to the folder where .set files are to be
 %                     imported.
@@ -30,6 +26,10 @@ preprocTable = preprocTable(contains(preprocTable.toDO, 'rejectInter'), :);
 badChann = cell2table(strcat(char(preprocTable{:, 'duplicated_channs'}), {','}, char(preprocTable{:, 'bad_channs'})), 'VariableNames', {'allBad'});
 badComp  = cell2table(strcat(char(preprocTable{:, 'comp_eyemove'}), {','}, char(preprocTable{:, 'comp_muscle'}), {','}, char(preprocTable{:, 'comp_50hz'}), ...
     {','}, char(preprocTable{:, 'comp_ecg'}), {','}, char(preprocTable{:, 'comp_headmove'}), {','}, char(preprocTable{:, 'comp_blerp'})));
+%% Read preprocessing table
+preprocTable = readtable(preprocPath);
+% Filter rows to keep files to reject/interpolate
+preprocTable = preprocTable(contains(preprocTable.toDO, 'rejectInter'), :);
 
 % Cell with file names
 files = preprocTable.file_name';
