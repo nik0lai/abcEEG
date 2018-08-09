@@ -3,7 +3,7 @@ function [importTrack] = abc_import_bdf(bdfPath, setPath, newSrate, bdfFiles, bd
 % optionally, change the sampling rate of the imported data. Parallel
 % processing available if possible.
 %
-% Usage: abc_import_bdf(64, bdfFiles, bdfPath, setPath, bdfDoneDir)
+% Usage: abc_import_bdf(bdfPath, setPath, newSrate, bdfFiles, bdfDoneDir)
 %
 % Inputs:
 %   'bdfPath'   - [string] a path to the folder with .bdf files to import.
@@ -32,7 +32,7 @@ end
 % .set files
 if isempty(setPath)
     error(['A path to the folder were .set files are to be saved.' newline ...
-        'Your parth is: ' setPath])
+        'Your path is: ' setPath])
 end
 %% Files to import:
 
@@ -55,7 +55,7 @@ end
 if ~numel(bdfFiles) > 0
     error(['There are no .bdf files within: ' newline bdfPath])
     
-    % Iterate through .bdf files
+% Iterate through .bdf files
 elseif numel(bdfFiles) > 0
     
     % importTrack info. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -125,9 +125,7 @@ elseif numel(bdfFiles) > 0
                     'Number of channels: ' num2str(chanNum(i)) newline ...
                     'EEG duration: ' num2str(eegDur(i)) ' seconds' newline ...
                     '**********************************'])
-                % disp([num2str(i) '/' num2str(size(bdfFiles, 2))])
-                % size(EEG.times,2)/EEG.srate
-            
+                            
         end 
             %% save dataset
             
